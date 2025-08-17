@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>NiorBox</title>
+  </head>
+  <body>
+    <header>
+      <div class="spacing__container">
+        <nav class="navbar">
+          <div class="nav__left">
+            <a href="#">
+              <img src="img/niorboxLogo.svg" alt="" class="nav__left-logo" />
+            </a>
+          </div>
+          <div class="nav__mid">
+            <ul class="nav__list">
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Filme</a></li>
+              <li><a href="#">Serien</a></li>
+              <li><a href="#">Neuerscheinungen</a></li>
+            </ul>
+          </div>
+          <div class="nav__right">
+            <button class="nav__right-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <!--<input type="text" class="nav__right-search" />-->
+            <button class="nav__right-login open__login">
+              <i class="fa-solid fa-user"></i>
+            </button>
+            <button class="nav__open-sidebar hidden">
+              <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <aside class="sidebar">
+      <div class="sidebar__layout">
+        <div class="sidebar__content">
+          <div class="sidebar__header">
+            <img src="img/niorboxLogo.svg" alt="" class="sidebar__logo" />
+          </div>
+          <div class="sidebar__body">
+            <ul class="sidebar__list">
+              <li>
+                <a href="#"><i class="fa-solid fa-house"></i> Home</a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-solid fa-compass"></i> Entdecken</a>
+              </li>
+              <li>
+                <a href="#"
+                  ><i class="fa-solid fa-chart-simple"></i> Im Trend</a
+                >
+              </li>
+              <li>
+                <a href="#"><i class="fa-solid fa-heart"></i> Favorites</a>
+              </li>
+            </ul>
+          </div>
+          <div class="sidebar__footer">
+            <ul class="sidebar__list">
+              <li>
+                <a href="#" class="open__login"
+                  ><i class="fa-solid fa-user"></i> Profil</a
+                >
+              </li>
+              <li>
+                <a href="#"><i class="fa-solid fa-gear"></i> Einstellungen</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="login">
+      <div class="login__layout">
+        <div class="login__content">
+          <button class="login__close" id="closeLogin">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div class="login__header">
+            <img src="img/niorboxLogo.svg" alt="" class="login__logo" />
+            <h3 class="login__title">Login</h3>
+          </div>
+          <form class="login__form">
+            <div class="form__group">
+              <input type="email" placeholder="Name" id="emailInput" />
+            </div>
+            <div class="form__group">
+              <input type="password" placeholder="Email" id="passwordInput" />
+            </div>
+            <div class="form__group">
+              <button type="submit" class="signin__btn">Login</button>
+            </div>
+          </form>
+          <div class="login__links">
+            <a href="#">Password vergessen?</a>
+            <a href="#">Konto erstellen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main>
+      <section class="hero">
+        <div class="hero__slider swiper">
+          <div class="hero__container swiper-wrapper">
+            <!--js-->
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <!-- <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div> -->
+      </section>
+      <section class="popular section">
+        <div class="spacing__container">
+          <h2 class="popular__heading section__heading">Im Trend</h2>
+        </div>
+        <div class="popular__slider slider">
+          <div class="popular__container swiper-wrapper">
+            <!--js-->
+          </div>
+        </div>
+      </section>
+      <section class="favorites section">
+        <div class="spacing__container">
+          <h2 class="favorites__heading section__heading">Fan Favorites</h2>
+        </div>
+        <div class="favorites__slider slider">
+          <div class="favorites__container swiper-wrapper">
+            <!--js-->
+          </div>
+        </div>
+      </section>
+      <section class="top-rated section">
+        <div class="spacing__container">
+          <h2 class="top-rated__heading section__heading">Bestbewertet</h2>
+        </div>
+        <div class="top-rated__slider slider">
+          <div class="top-rated__container swiper-wrapper">
+            <!--js-->
+          </div>
+        </div>
+        <div class="top-rated__more">
+          <button class="top-rated__btn">Mehr Anzeigen</button>
+        </div>
+      </section>
+    </main>
+    <div class="anime-details">
+      <div class="anime-details__layout">
+        <div class="anime-details__content">
+          
+          <!-- <div class="anime-details__comments">
+            <h3>Kommentare</h3>
+            <input type="text" class="anime-details-userinput" placeholder = "Kommentare hier eingeben">
+            <div class="anime-details__user-comment">
+              <div>
+                <div>
+                  <span>Lisa Smith</span>
+                  <span>08.08 2024</span>
+                </div>
+                <div>
+                  <button>
+                    <i class="fa-solid fa-thumbs-up"></i>
+                  </button>
+                  <button>
+                    <i class="fa-solid fa-thumbs-down"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  </body>
+</html>

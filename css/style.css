@@ -1,0 +1,490 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-accent: rgb(97, 171, 236);
+  --color-text: rgb(242, 242, 242);
+}
+body {
+  font-family: "Poppins";
+  background-color: rgb(27, 27, 27);
+}
+.section {
+  margin: 3rem 0;
+}
+.section__heading {
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
+  /* font-size: 2rem; */
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+header {
+  background-color: rgb(34, 33, 33);
+}
+/*spacingContainer*/
+.spacing__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.hero-spacing__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  flex: 1;
+  margin-top: 12rem;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.nav__left {
+}
+.nav__mid {
+}
+.nav__right {
+  display: flex;
+  gap: 1rem;
+}
+.nav__left-logo {
+  width: 9rem;
+  height: 3.5rem;
+}
+.nav__list {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+.nav__list li a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+.nav__right-search,
+.nav__right-login,
+.nav__open-sidebar {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  i {
+    color: var(--color-text);
+  }
+}
+.nav__open-sidebar.hidden {
+  display: none;
+}
+/*sidebar*/
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+  z-index: 5;
+
+  pointer-events: none;
+}
+.sidebar__layout {
+  background-color: rgb(34, 33, 33);
+  padding: 2rem;
+  margin: 0 auto;
+  transform: translateX(-100%);
+  transition: 0.3s ease-in-out;
+  z-index: 5;
+}
+.sidebar.open {
+  pointer-events: all;
+}
+.sidebar.open .sidebar__layout {
+  transform: translateX(0);
+}
+.sidebar__content {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 2fr auto;
+}
+.sidebar__header {
+  margin-bottom: 2rem;
+}
+.sidebar__logo {
+  width: 8rem;
+  height: auto;
+}
+.sidebar__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar__list li {
+  margin: 1rem 0;
+}
+.sidebar__list li a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+.sidebar__list li a:hover {
+  color: rgb(243, 243, 243);
+}
+.sidebar__footer {
+  border-top: 1px solid rgb(221, 221, 221);
+}
+/*login modal*/
+.login {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.7);
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.login.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.login__layout {
+  background-color: rgb(34, 33, 33);
+  padding: 2rem;
+  border-radius: 0.2rem;
+}
+.login__content {
+  position: relative;
+}
+.login__close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: none;
+  color: var(--color-text);
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.login__header {
+  /*vllt name ändern*/
+  text-align: center;
+}
+.login__logo {
+  width: 8rem;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+.login__title {
+  color: var(--color-text);
+  font-weight: 400;
+  font-size: 1.7rem;
+}
+.login__form {
+  margin: 1rem 0;
+}
+.form__group {
+  width: 100%;
+  margin: 1rem 0;
+  input,
+  button {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    border: none;
+  }
+}
+.form__group input:focus {
+  outline: none;
+}
+.signin__btn {
+  background-color: var(--color-accent);
+  cursor: pointer;
+}
+.login__links {
+  display: flex;
+  gap: 1rem;
+
+  a {
+    color: var(--color-text);
+  }
+}
+/*hero*/
+.hero {
+  color: var(--color-text);
+  
+}
+.hero__bg {
+  /* padding: 15rem 0 0 0; */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.hero__content {
+  max-width: 450px;
+  /* position: relative; */
+}
+.hero__title {
+  /* font-size: 2.3rem; */
+  font-size: clamp(1.7rem, 2.5vw, 2.8rem);
+}
+.hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.hero__rating {
+}
+.hero__description {
+  
+}
+.hero__buttons {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.hero__btn {
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  border: none;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.hero__btn--watch {
+  background-color: var(--color-accent);
+  color: black;
+}
+.hero__btn--watch:hover {
+}
+.hero__btn--details {
+  background: none;
+  font-weight: bold;
+   /* i {
+    transition: 0.3s ease-in-out;
+   } */
+}
+/* .hero__btn--details:hover {
+  i {
+    margin-left: 0.5rem;
+  }
+ 
+} */
+/*swiper*/
+.slider {
+  overflow: hidden;
+  width: 100%;
+}
+.swiper-pagination {
+  
+}
+/*popular*/
+/**/
+.anime-img {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
+  border-radius: 0.2rem;
+}
+.anime-title {
+  color: var(--color-text);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Anzahl der Zeilen */
+  -webkit-box-orient: vertical;
+}
+/*favorites*/
+/*topRated*/
+.top-rated__more {
+  margin-top: 1rem;
+  text-align: center;
+}
+.top-rated__btn {
+  background-color: var(--color-accent);
+  color: black;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  border: none;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+/*details__panel*/
+.anime-details {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(27, 27, 27);
+  z-index: 100;
+  
+  opacity: 0;
+  pointer-events: none;
+}
+.anime-details.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.anime-details__layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  
+}
+.anime-details__content {
+  position: relative;
+  color: white;
+}
+/* close-details */
+.close-details {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+.anime-details__main {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 2rem;
+}
+ /* Textbeschreibung */
+.anime-details__text {
+  flex: 1 1 80%;
+}
+.anime-details__heading {
+  font-size: clamp(1.7rem, 2.5vw, 2.8rem);
+}
+.anime-details__description {
+  margin: 1rem 0;
+  line-height: 1.8;
+  color: rgb(207, 207, 207);
+}
+/* Status, Season, Episoden */
+.anime-details__info {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 3rem;
+}
+.anime-details__info-group {
+
+}
+.anime-details__label {
+  display: block;
+  color: rgb(207, 207, 207);
+}
+.anime-details__value {
+  font-weight: 600;
+  margin-left: 0.3rem;
+  color: var(--color-text);
+}
+.anime-details__genre {
+  margin-top: 1.5rem;
+}
+.anime-details__genre-btn {
+  margin: 0 0.3rem 0 0;
+  background: none;
+  color: var(--color-accent);
+  border: none;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease-in-out;
+}
+.anime-details__genre-btn:hover {
+  background-color: var(--color-accent);
+  color: black;
+}
+/* Bild + Bewertung */
+.anime-details__media {
+  flex: 1 1 20%;
+  text-align: center;
+}
+.anime-details__img {
+  width: 100%;
+  height: auto;
+}
+.anime-details__rating {
+
+}
+.anime-details__stars {
+  margin: 0.2rem 0 1rem 0;
+}
+.anime-details__stars i {
+  color: #FFD43B;
+}
+.anime-details__btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.anime-details__fav-btn {
+  border: none;
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.fav-btn {
+  i {
+    color: red;
+    font-size: 1rem;
+  }
+}
+.trailer-btn {
+  background-color: white;
+
+  i {
+    font-size: 1rem;
+  }
+}
+.anime-details__fav-btn:hover {
+  opacity: 0.9;
+}
+/* Seasons */
+.anime-details__season {
+  margin: 2rem 0;
+}
+.anime-details__season-btn {
+  background-color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  margin: 0.3rem 0.5rem 0 0;
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+}
+.anime-details__season-btn:hover {
+  background-color: lightgray;
+}
+/* MediaQuerys */
+@media (max-width: 740px) {
+  .nav__list {
+    display: none;
+  }
+  .nav__right-login {
+    display: none;
+  }
+  .nav__open-sidebar.hidden {
+    display: inline;
+  }
+}
