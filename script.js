@@ -530,15 +530,15 @@ openSideBtn.addEventListener("click", () => {
 //----------------------------------------------------------------------------------
 
 // login
-const login = document.querySelector(".login");
-const closeLogin = document.getElementById("closeLogin");
-closeLogin.addEventListener("click", () => {
-  login.classList.remove("open");
-});
+// const login = document.querySelector(".login");
+// const closeLogin = document.getElementById("closeLogin");
+// closeLogin.addEventListener("click", () => {
+//   login.classList.remove("open");
+// });
 
-const openLogin = document.querySelectorAll(".open__login");
-openLogin.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    login.classList.add("open");
-  });
-});
+// const openLogin = document.querySelectorAll(".open__login");
+// openLogin.forEach((btn) => {
+//   btn.addEventListener("click", () => {
+//     login.classList.add("open");
+//   });
+// });
