@@ -21,6 +21,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/global.css">
     <title>NiorBox</title>
   </head>
   <body>
@@ -94,34 +95,6 @@
         </div>
       </div>
     </aside>
-    <!-- <div class="login">
-      <div class="login__layout">
-        <div class="login__content">
-          <button class="login__close" id="closeLogin">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-          <div class="login__header">
-            <img src="img/niorboxLogo.svg" alt="" class="login__logo" />
-            <h3 class="login__title">Login</h3>
-          </div>
-          <form class="login__form">
-            <div class="form__group">
-              <input type="email" placeholder="Name" id="emailInput" />
-            </div>
-            <div class="form__group">
-              <input type="password" placeholder="Email" id="passwordInput" />
-            </div>
-            <div class="form__group">
-              <button type="submit" class="signin__btn">Login</button>
-            </div>
-          </form>
-          <div class="login__links">
-            <a href="#">Password vergessen?</a>
-            <a href="#">Konto erstellen</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <main>
       <section class="hero">
         <div class="hero__slider swiper">
@@ -129,9 +102,9 @@
             <!--js-->
           </div>
           <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
         </div>
-        <!-- <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div> -->
       </section>
       <section class="popular section">
         <div class="spacing__container">
@@ -167,34 +140,21 @@
         </div>
       </section>
     </main>
-    <div class="anime-details">
-      <div class="anime-details__layout">
-        <div class="anime-details__content">
-          <!-- <div class="anime-details__comments">
-            <h3>Kommentare</h3>
-            <input type="text" class="anime-details-userinput" placeholder = "Kommentare hier eingeben">
-            <div class="anime-details__user-comment">
-              <div>
-                <div>
-                  <span>Lisa Smith</span>
-                  <span>08.08 2024</span>
-                </div>
-                <div>
-                  <button>
-                    <i class="fa-solid fa-thumbs-up"></i>
-                  </button>
-                  <button>
-                    <i class="fa-solid fa-thumbs-down"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div> -->
+    <div class="details-panel">
+      <div class="details-panel__layout">
+        <div class="details-panel__content">
+          
         </div>
       </div>
     </div>
-
-    <script src="script.js"></script>
+    <div class="trailer-panel">
+      <button class="trailer-panel__close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="trailer-panel__content"></div>
+      <!--js-->
+    </div>
+    <script src="/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </body>
 </html>

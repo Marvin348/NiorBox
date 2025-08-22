@@ -9,27 +9,29 @@
 
   --border-radius: 0.2rem;
 }
+ul {
+  list-style: none;
+}
 body {
-  font-family: "Poppins";
-  background-color: rgb(27, 27, 27);
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
   color: var(--color-text);
 }
 /*spacingContainer*/
 .spacing__container {
-  max-width: 1200px;
+  max-width: var(--container-width);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: var(--container-padding);
   overflow: hidden;
 }
 .spacing__container-small {
-  max-width: 650px;
+  max-width: var(--container-width-small);
   margin: 0 auto;
   padding: 1rem 2rem;
   overflow: hidden;
 }
 /* section heading */
 .section__heading {
-  /* font-size: 1.5rem; */
   font-size: clamp(1.3rem, 1.6vw, 1.9rem);
   font-weight: 600;
   margin-bottom: 1rem;
@@ -50,37 +52,36 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.8rem 0 0.2rem 0;
 }
 .nav__left {
 }
 .nav__right {
 }
 .nav__logo {
-  width: clamp(6rem, 11vw, 14rem);
-  height: 3.5rem;
+  width: clamp(7rem, 11vw, 14rem);
+  height: auto;
 }
 .nav__login-link {
   text-decoration: none;
-  background-color: var(--color-accent);
+  background-color: black;
+  color: var(--color-text);
   padding: 0.5rem;
   border-radius: var(--border-radius);
   text-transform: uppercase;
   font-size: 1.2rem;
-  color: black;
+  border: 1px solid white;
 }
 /* hero */
 .hero {
-  display: flex;
-  align-items: center;
-  text-align: center;
   flex-grow: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .hero__heading {
-  /* font-size: 2.7rem; */
   font-size: clamp(2rem, 2.95vw, 4.7rem);
   font-weight: 600;
 }
@@ -96,14 +97,12 @@ body {
   background-color: rgb(239, 239, 239);
   border-radius: var(--border-radius);
   border: none;
-
 }
 .hero__input::placeholder {
   color: rgb(96, 96, 96);
   opacity: 0.8;
 }
 .hero__input:focus {
-  /* outline: 2px solid black; */
 }
 .hero__input,
 .hero__btn {
@@ -162,19 +161,16 @@ body {
   border-radius: var(--border-radius);
 }
 .pricing__plan:hover {
-  /* box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px; */
 }
 .pricing__title {
   text-transform: uppercase;
   color: var(--color-accent);
-  
 }
 .pricing__features {
-  
 }
 .pricing__feature {
   padding: 0.8rem 0;
-  border-bottom: 1px solid rgb(120, 120, 120) ;
+  border-bottom: 1px solid rgb(120, 120, 120);
 }
 .pricing__label {
   margin-bottom: 0.2rem;
@@ -209,15 +205,13 @@ body {
 }
 .faq__question {
   flex: 1;
-  background-color: rgb(38, 38, 38);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
 }
 .faq__question-btn {
   text-align: start;
   color: var(--color-text);
   border: none;
-  background: none;
+  background-color: rgb(38, 38, 38);
   font-size: 1.1rem;
   font-weight: 600;
   display: flex;
@@ -226,10 +220,22 @@ body {
   gap: 2rem;
   cursor: pointer;
   width: 100%;
-  i {
-   
-  }
-  
+  padding: 1.5rem;
+  transition: 0.3s ease-in-out;
+}
+.faq__answer {
+  text-align: start;
+  padding: 1.5rem;
+  border-top: 5px solid rgb(27, 27, 27);
+  background-color: rgb(38, 38, 38);
+  opacity: 0.8;
+  font-size: 1.05rem;
+}
+.faq__answer.hidden {
+  display: none;
+}
+.faq__question-btn:hover {
+  background-color: rgb(49, 49, 49);
 }
 /* footer */
 .footer__content {
@@ -256,26 +262,22 @@ body {
   }
 }
 .footer__registration {
-  
 }
 .footer__form {
   position: relative;
   display: flex;
   width: 400px;
 }
-.footer__input, .footer__btn {
+.footer__input,
+.footer__btn {
   padding: 0.5rem;
 }
 .footer__input {
   flex-grow: 1;
   background-color: rgb(239, 239, 239);
-  border: 2px solid transparent;
+  border: none;
   border-radius: var(--border-radius);
   border-radius: 0.2rem;
-}
-.footer__input:focus {
-  outline: none;
-  border: 2px solid var(--color-accent);
 }
 .footer__btn {
   background-color: var(--color-accent);
@@ -305,7 +307,7 @@ body {
 }
 
 /* media querrys */
-@media(max-width: 800px) {
+@media (max-width: 800px) {
   .pricing__plans {
     flex-direction: column;
   }
@@ -317,5 +319,29 @@ body {
   }
   .features__item {
     /* text-align: start; */
+  }
+}
+@media (max-width: 650px) {
+  .hero__btn {
+    position: static;
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    border-radius: 0.2rem;
+  }
+  .footer__form {
+    width: 100%;
+    flex-direction: column;
+  }
+  .footer__btn {
+    position: static;
+    flex-direction: column;
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    border-radius: 0.2rem;
+  }
+  .faq__question-btn {
+    /* font-weight: 500; */
   }
 }

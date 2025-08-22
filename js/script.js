@@ -5,10 +5,20 @@ let favoritesAnimes = [];
 let topRatedAnimes = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await fetchHeroAnimes();
-  await fetchPopularAnimes();
-  await fetchFavoritesAnimes();
-  await fetchTopRatedAnimes();
+  try {
+    await Promise.all([
+      fetchHeroAnimes(),
+      fetchPopularAnimes(),
+      fetchFavoritesAnimes(),
+      fetchTopRatedAnimes(),
+    ]);
+  } catch (error) {
+    console.error("Fehler beim Laden", error);
+  }
+  // await fetchHeroAnimes();
+  // await fetchPopularAnimes();
+  // await fetchFavoritesAnimes();
+  // await fetchTopRatedAnimes();
 });
 
 // HERO SECTION
@@ -31,6 +41,11 @@ async function fetchHeroAnimes() {
           episodes
           duration  
           description(asHtml: false)
+          trailer {
+          id
+          site
+          thumbnail
+          }
         }
       }
     }
@@ -66,6 +81,7 @@ function renderHero(data) {
       duration,
       episodes,
       id,
+      trailer,
     }) => {
       const heroItem = document.createElement("div");
       heroItem.classList.add("hero__item", "swiper-slide");
@@ -108,7 +124,8 @@ function renderHero(data) {
       const heroDescription = document.createElement("p");
       heroDescription.classList.add("hero__description");
       const shortDescription = description.slice(0, 100);
-      heroDescription.textContent = `${shortDescription
+      heroDescription.textContent = `${
+        shortDescription
           ? shortDescription.replace(/<\/?[^>]+(>|$)/g, "")
           : "No description"
       }.....`;
@@ -128,6 +145,12 @@ function renderHero(data) {
       heroBtnDetails.addEventListener("click", () => {
         fetchDetailsPanel(id);
         openDetailsPanel();
+        lockScroll();
+      });
+      heroBtnWatch.addEventListener("click", () => {
+        trailerPanel.classList.add("open");
+        lockScroll();
+        renderTrailerPanel(trailer.id, trailer.site);
       });
 
       // Struktur zusammenbauen
@@ -151,11 +174,10 @@ function initHeroSwiper() {
       el: ".swiper-pagination",
       clickable: true,
     },
-    // Navigation arrows
-    // navigation: {
-    //   nextEl: ".swiper-button-next",
-    //   prevEl: ".swiper-button-prev",
-    // },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
   });
 }
 
@@ -223,6 +245,30 @@ function initPopularSwiper() {
     spaceBetween: 20,
     loop: false,
     watchSlidesVisibility: true,
+    grabCursor: true,
+    breakpoints: {
+      1440: {
+        slidesPerView: 8,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 6,
+        spaceBetween: 18,
+      },
+      640: {
+        slidesPerView: 4,
+        spaceBetween: 15,
+      },
+      480: {
+        slidesPerView: 3,
+        spaceBetween: 12,
+      },
+      320: {
+        // small Smartphones
+        slidesPerView: 2,
+        spaceBetween: 10,
+      },
+    },
   });
 }
 
@@ -289,6 +335,30 @@ function initFavoritesSwiper() {
     spaceBetween: 20,
     loop: false,
     watchSlidesVisibility: true,
+    grabCursor: true,
+    breakpoints: {
+      1440: {
+        slidesPerView: 8,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 6,
+        spaceBetween: 18,
+      },
+      640: {
+        slidesPerView: 6,
+        spaceBetween: 15,
+      },
+      480: {
+        slidesPerView: 4,
+        spaceBetween: 12,
+      },
+      320: {
+        // small Smartphones
+        slidesPerView: 3,
+        spaceBetween: 10,
+      },
+    },
   });
 }
 
@@ -354,6 +424,30 @@ function initTopRatedSwiper() {
     spaceBetween: 20,
     loop: false,
     watchSlidesVisibility: true,
+    grabCursor: true,
+    breakpoints: {
+      1440: {
+        slidesPerView: 8,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 6,
+        spaceBetween: 18,
+      },
+      640: {
+        slidesPerView: 6,
+        spaceBetween: 15,
+      },
+      480: {
+        slidesPerView: 4,
+        spaceBetween: 12,
+      },
+      320: {
+        // small Smartphones
+        slidesPerView: 3,
+        spaceBetween: 10,
+      },
+    },
   });
 }
 
@@ -379,6 +473,11 @@ async function fetchDetailsPanel(id) {
           description
           averageScore
           episodes
+          trailer {
+          id
+          site
+          thumbnail
+          }
         }
       }`;
 
@@ -397,88 +496,88 @@ async function fetchDetailsPanel(id) {
 
     const anime = data.data.Media;
 
-    console.log(data);
+    console.log(anime);
     renderDetailsPanel(anime);
   } catch (error) {
     console.error("Fehler beim Laden des DetailsPanel", error);
   }
 }
 function renderDetailsPanel(data) {
-  const detailsContent = document.querySelector(".anime-details__content");
+  const detailsContent = document.querySelector(".details-panel__content");
   detailsContent.innerHTML = `<button class="close-details">
             <i class="fa-solid fa-xmark"></i>
            </button>
-          <div class="anime-details__main">
-            <div class="anime-details__text">
-              <h2 class="anime-details__heading">${data.title.english}</h2>
-              <p class="anime-details__description">
+          <div class="details-panel__main">
+            <div class="details-panel__text">
+              <h2 class="details-panel__heading">${data.title.english}</h2>
+              <p class="details-panel__description">
                 ${
                   data.description
                     ? data.description.replace(/<\/?[^>]+(>|$)/g, "")
                     : "No description"
                 }
               </p>
-              <div class="anime-details__info">
-                <div class="anime-details__info-group">
-                  <span class="anime-details__label"
+              <div class="details-panel__info">
+                <div class="details-panel__info-group">
+                  <span class="details-panel__label"
                     >Status:<span
-                      class="anime-details__value anime-details__status"
+                      class="details-panel__value details-panel__status"
                     >
                       ${data.status}</span
                     ></span
                   >
-                  <span class="anime-details__label"
+                  <span class="details-panel__label"
                     >Season:<span
-                      class="anime-details__value anime-details__info-season"
+                      class="details-panel__value details-panel__info-season"
                     >
                       ${data.season}</span
                     ></span
                   >
-                  <span class="anime-details__label"
+                  <span class="details-panel__label"
                     >Episoden:<span
-                      class="anime-details__value anime-details__episodes"
+                      class="details-panel__value details-panel__episodes"
                     >
                       ${data.episodes}</span
                     ></span
                   >
                 </div>
-                <div class="anime-details__info-group">
-                  <span class="anime-details__label"
+                <div class="details-panel__info-group">
+                  <span class="details-panel__label"
                     >Studio:<span
-                      class="anime-details__value anime-details__studio"
+                      class="details-panel__value details-panel__studio"
                     >
                       ${data.studios.nodes[0]?.name ?? "Unknown"}</span
                     ></span
                   >
-                  <span class="anime-details__label"
+                  <span class="details-panel__label"
                     >Type:<span
-                      class="anime-details__value anime-details__type"
+                      class="details-panel__value details-panel__type"
                     >
                       ${data.format}</span
                     ></span
                   >
-                  <span class="anime-details__label"
+                  <span class="details-panel__label"
                     >Zeit:<span
-                      class="anime-details__value anime-details__duration"
+                      class="details-panel__value details-panel__duration"
                     >
                       ${data.duration}m</span
                     ></span
                   >
                 </div>
               </div>
-              <div class="anime-details__genre">
+              <div class="details-panel__genre">
                 <span>Genre:</span>
               </div>
             </div>
-            <div class="anime-details__media">
+            <div class="details-panel__media">
               <img src="${
                 data.coverImage.large
-              }" alt="" class="anime-details__img" />
+              }" alt="" class="details-panel__img" />
               <div>
-                <span class="anime-details__rating">Rating ${
+                <span class="details-panel__rating">Rating ${
                   data.averageScore
                 }</span>
-                <div class="anime-details__stars">
+                <div class="details-panel__stars">
                   <i class="fa-solid fa-star"></i>
                   <i class="fa-solid fa-star"></i>
                   <i class="fa-solid fa-star"></i>
@@ -486,39 +585,39 @@ function renderDetailsPanel(data) {
                   <i class="fa-solid fa-star-half-stroke"></i>
                 </div>
               </div>
-              <div class="anime-details__btns">
-                <button class="anime-details__fav-btn fav-btn">
+              <div class="details-panel__btns">
+                <button class="details-panel__fav-btn fav-btn">
                   <i class="fa-solid fa-heart"></i> Favorites
                 </button>
-                <button class="anime-details__fav-btn trailer-btn">
+                <button class="details-panel__fav-btn trailer-btn">
                   <i class="fa-solid fa-video"></i> Trailer
                 </button>
               </div>
             </div>
         </div>`;
 
-  const genreListEl = document.querySelector(".anime-details__genre");
+  const genreListEl = document.querySelector(".details-panel__genre");
 
   data.genres.forEach((g) => {
     const btn = document.createElement("button");
-    btn.className = "anime-details__genre-btn";
+    btn.className = "details-panel__genre-btn";
     btn.textContent = g;
     genreListEl.appendChild(btn);
   });
   const closeDetails = document.querySelector(".close-details");
-  closeDetails.addEventListener("click", closeDetailsPanel);
+  closeDetails.addEventListener("click", () => {
+    closeDetailsPanel();
+    unlockScroll();
+  });
 }
-//----------------------------------------------------------------------------------
 // DETAILS PANEL
-const animeDetails = document.querySelector(".anime-details");
+const animeDetails = document.querySelector(".details-panel");
 function openDetailsPanel() {
   animeDetails.classList.add("open");
 }
 function closeDetailsPanel() {
   animeDetails.classList.remove("open");
 }
-
-//----------------------------------------------------------------------------------
 
 // sidebar
 const openSideBtn = document.querySelector(".nav__open-sidebar");
@@ -527,18 +626,31 @@ const sidebar = document.querySelector(".sidebar");
 openSideBtn.addEventListener("click", () => {
   sidebar.classList.toggle("open");
 });
-//----------------------------------------------------------------------------------
 
-// login
-// const login = document.querySelector(".login");
-// const closeLogin = document.getElementById("closeLogin");
-// closeLogin.addEventListener("click", () => {
-//   login.classList.remove("open");
-// });
+// TRAILER PANEL
+const trailerPanel = document.querySelector(".trailer-panel");
 
-// const openLogin = document.querySelectorAll(".open__login");
-// openLogin.forEach((btn) => {
-//   btn.addEventListener("click", () => {
-//     login.classList.add("open");
-//   });
-// });
+function renderTrailerPanel(trailerId, site) {
+  const trailerContent = document.querySelector(".trailer-panel__content");
+  trailerContent.innerHTML = "";
+
+  const trailer = document.createElement("iframe");
+  trailer.classList.add("trailer-panel__video");
+  trailer.src = `https://www.${site}.com/embed/${trailerId}?autoplay=1&mute=1`;
+  trailer.allow = "autoplay; fullscreen";
+
+  trailerContent.append(trailer);
+
+  const trailerClose = document.querySelector(".trailer-panel__close");
+  trailerClose.addEventListener("click", () => {
+    trailerPanel.classList.remove("open");
+    unlockScroll();
+  });
+}
+
+function lockScroll() {
+  document.body.classList.add("no-scroll");
+}
+function unlockScroll() {
+  document.body.classList.remove("no-scroll");
+}
