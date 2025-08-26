@@ -1,55 +1,92 @@
-// Master arrays
-let heroAnimes = [];
-let popularAnimes = [];
-let favoritesAnimes = [];
-let topRatedAnimes = [];
+/* ====== MASTER ARRAYS ===== */
+let heroSection = [];
+let popularSection = [];
+let favoritesSection = [];
+let topRatedSection = [];
 
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await Promise.all([
-      fetchHeroAnimes(),
-      fetchPopularAnimes(),
-      fetchFavoritesAnimes(),
-      fetchTopRatedAnimes(),
-    ]);
-  } catch (error) {
-    console.error("Fehler beim Laden", error);
-  }
-  // await fetchHeroAnimes();
-  // await fetchPopularAnimes();
-  // await fetchFavoritesAnimes();
-  // await fetchTopRatedAnimes();
-});
+/* ====== Loader ===== */
+const loader = document.getElementById("loader");
 
-// HERO SECTION
-async function fetchHeroAnimes() {
+document.addEventListener("DOMContentLoaded", fetchData);
+
+/* ============================
+   Fetch all sections in one GraphQL query
+   Hero, Popular, Favorites, TopRated
+============================ */
+async function fetchData() {
+  loader.style.display = "flex";
   const query = `
-  query {
-      Page(page: 1, perPage: 5) {
-        media(type: ANIME, sort: POPULARITY_DESC) {
-          id
-          title {
-            english
-        }
-          bannerImage
-          description(asHtml: false)
-          coverImage {
-            large
-        }
-          description(asHtml: false)
-          averageScore
-          episodes
-          duration  
-          description(asHtml: false)
-          trailer {
-          id
-          site
-          thumbnail
-          }
-        }
+query {
+  hero: Page(page: 1, perPage: 5) {
+    media(type: ANIME, sort: POPULARITY_DESC) {
+      id
+      title {
+        english
+      }
+      bannerImage
+      coverImage {
+        large
+      }
+      description(asHtml: false)
+      averageScore
+      episodes
+      duration
+      trailer {
+        id
+        site
       }
     }
-  `;
+  }
+  popular: Page(page: 1, perPage: 15) {
+    media(type: ANIME, sort: POPULARITY_DESC) {
+      id
+      title {
+        english
+      }
+      coverImage {
+        medium
+        large
+      }
+      trailer {
+        id
+        site
+      }
+    }
+  }
+  favorites: Page(page: 1, perPage: 15) {
+    media(type: ANIME, sort: FAVOURITES_DESC) {
+      id
+      title {
+        english
+      }
+      coverImage {
+        medium
+        large
+      }
+      trailer {
+        id
+        site
+      }
+    }
+  }
+  topRated: Page(page: 1, perPage: 15) {
+    media(type: ANIME, sort: SCORE_DESC) {
+      id
+      title {
+        english
+      }
+      coverImage {
+        medium
+        large
+      }
+      trailer {
+        id
+        site
+      }
+    }
+  }
+}
+`;
   try {
     const response = await fetch("https://graphql.anilist.co", {
       method: "Post",
@@ -57,17 +94,36 @@ async function fetchHeroAnimes() {
       body: JSON.stringify({ query }),
     });
     const data = await response.json();
-    heroAnimes = data.data.Page.media;
-    console.log(heroAnimes);
-    renderHero(heroAnimes);
-    // initHeroSwiper();
-    // heroAnimes.forEach((anime) => {
-    //   console.log(anime.bannerImage);
-    // });
+
+    const { hero, popular, favorites, topRated } = data.data;
+    heroSection = hero.media;
+    popularSection = popular.media;
+    favoritesSection = favorites.media;
+    topRatedSection = topRated.media;
+
+    // HERO SECTION
+    renderHero(heroSection);
+    initHeroSwiper();
+
+    // POPULAR SECTION
+    renderPopular(popularSection);
+    initPopularSwiper();
+
+    // FAVORITES SECTION
+    renderFavorites(favoritesSection);
+    initSwiper(".favorites__slider");
+
+    // TOP-RATED SECTION
+    renderTopRated(topRatedSection);
+    initSwiper(".top-rated__slider");
   } catch (error) {
-    console.error("Fehler beim Laden der Hero Section", error);
+    console.error("Fehler beim Laden:", error);
+  } finally {
+    loader.style.display = "none";
   }
 }
+
+/* ====== HERO SECTION ===== */
 function renderHero(data) {
   const heroContainer = document.querySelector(".hero__container");
   heroContainer.innerHTML = "";
@@ -76,6 +132,7 @@ function renderHero(data) {
     ({
       title,
       bannerImage,
+      coverImage,
       averageScore,
       description,
       duration,
@@ -86,25 +143,25 @@ function renderHero(data) {
       const heroItem = document.createElement("div");
       heroItem.classList.add("hero__item", "swiper-slide");
 
-      // Hintergrund
       const heroBg = document.createElement("div");
       heroBg.classList.add("hero__bg");
-      heroBg.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url("${bannerImage}")`;
 
-      // Spacing Container (liegt über dem Bild)
+      setHeroBg(heroBg, coverImage, bannerImage);
+
+      window.addEventListener("resize", () => {
+        setHeroBg(heroBg, coverImage, bannerImage);
+      });
+
       const heroSpacingContainer = document.createElement("div");
       heroSpacingContainer.classList.add("hero-spacing__container");
 
-      // Content-Wrapper
       const heroContent = document.createElement("div");
       heroContent.classList.add("hero__content");
 
-      // Titel
       const heroTitle = document.createElement("h2");
       heroTitle.classList.add("hero__title");
       heroTitle.textContent = title.english;
 
-      // Meta-Daten
       const heroMeta = document.createElement("div");
       heroMeta.classList.add("hero__meta");
 
@@ -120,7 +177,6 @@ function renderHero(data) {
       heroEpisodes.classList.add("hero__episodes");
       heroEpisodes.innerHTML = `<i class="fa-solid fa-film"></i> ${episodes}`;
 
-      // Beschreibung
       const heroDescription = document.createElement("p");
       heroDescription.classList.add("hero__description");
       const shortDescription = description.slice(0, 100);
@@ -130,7 +186,6 @@ function renderHero(data) {
           : "No description"
       }.....`;
 
-      // Buttons
       const heroButtons = document.createElement("div");
       heroButtons.classList.add("hero__buttons");
 
@@ -143,17 +198,14 @@ function renderHero(data) {
       heroBtnDetails.innerHTML = `Details <i class="fa-solid fa-chevron-right"></i>`;
 
       heroBtnDetails.addEventListener("click", () => {
+        lockScroll();
         fetchDetailsPanel(id);
         openDetailsPanel();
-        lockScroll();
       });
       heroBtnWatch.addEventListener("click", () => {
-        trailerPanel.classList.add("open");
-        lockScroll();
-        renderTrailerPanel(trailer.id, trailer.site);
+        openTrailer(trailer.id, trailer.site);
       });
 
-      // Struktur zusammenbauen
       heroContainer.appendChild(heroItem);
       heroItem.appendChild(heroBg);
       heroItem.appendChild(heroSpacingContainer);
@@ -170,6 +222,7 @@ function initHeroSwiper() {
   const heroSwiper = new Swiper(".hero__slider", {
     direction: "horizontal",
     loop: true,
+    grabCursor: true,
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
@@ -180,44 +233,28 @@ function initHeroSwiper() {
     },
   });
 }
+function setHeroBg(heroBg, coverImage, bannerImage) {
+  const gradient = `
+    linear-gradient(
+      to top right,
+      rgba(0,0,0,0.8) 0%,
+      rgba(0,0,0,0.7) 25%,
+      rgba(0,0,0,0.0) 85%
+    )`;
 
-// POPULAR SECTION
-async function fetchPopularAnimes() {
-  const query = `
-  query {
-      Page(page: 1, perPage: 15) {
-        media(type: ANIME, sort: POPULARITY_DESC) {
-          coverImage {
-            medium
-            large
-          }
-          title {
-            english
-          }
-        }
-      }
-    }`;
-
-  try {
-    const response = await fetch("https://graphql.anilist.co", {
-      method: "Post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
-    const data = await response.json();
-    popularAnimes = data.data.Page.media;
-    // console.log(popularAnimes);
-    renderPopular(popularAnimes);
-    initPopularSwiper();
-  } catch (error) {
-    console.error("Fehler neim Laden der Popular Section", error);
+  if (window.matchMedia("(max-width: 480px)").matches) {
+    heroBg.style.backgroundImage = `${gradient}, url("${coverImage.large}")`;
+  } else {
+    heroBg.style.backgroundImage = `${gradient}, url("${bannerImage}")`;
   }
 }
+
+/* ====== POPULAR SECTION ===== */
 function renderPopular(data) {
   const popularContainer = document.querySelector(".popular__container");
   popularContainer.innerHTML = "";
 
-  data.forEach(({ title, coverImage }) => {
+  data.forEach(({ title, coverImage, trailer }) => {
     const popularItem = document.createElement("div");
     popularItem.classList.add("popular__item", "swiper-slide");
 
@@ -232,6 +269,10 @@ function renderPopular(data) {
     const popularTitle = document.createElement("span");
     popularTitle.classList.add("popular__title", "anime-title");
     popularTitle.textContent = title.english;
+
+    popularItem.addEventListener("click", () => {
+      openTrailer(trailer.id, trailer.site);
+    });
 
     popularContainer.appendChild(popularItem);
 
@@ -264,7 +305,6 @@ function initPopularSwiper() {
         spaceBetween: 12,
       },
       320: {
-        // small Smartphones
         slidesPerView: 2,
         spaceBetween: 10,
       },
@@ -272,43 +312,12 @@ function initPopularSwiper() {
   });
 }
 
-// FAVORITES SECTION
-async function fetchFavoritesAnimes() {
-  const query = `
-  query {
-      Page(page: 1, perPage: 15) {
-        media(type: ANIME, sort: TRENDING_DESC) {
-          coverImage {
-            medium
-            large
-          }
-          title {
-            english
-          }
-        }
-      }
-    }`;
-
-  try {
-    const response = await fetch("https://graphql.anilist.co", {
-      method: "Post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
-    const data = await response.json();
-    favoritesAnimes = data.data.Page.media;
-    // console.log(favoritesAnimes);
-    renderFavorites(favoritesAnimes);
-    initFavoritesSwiper();
-  } catch (error) {
-    console.error("Fehler beim Laden der Favorites Section", error);
-  }
-}
+/* ====== FAVORITES SECTION ===== */
 function renderFavorites(data) {
   const favoritesContainer = document.querySelector(".favorites__container");
   favoritesContainer.innerHTML = "";
 
-  data.forEach(({ title, coverImage }) => {
+  data.forEach(({ title, coverImage, trailer }) => {
     const favoritesItem = document.createElement("div");
     favoritesItem.classList.add("favorites__item", "swiper-slide");
 
@@ -316,13 +325,15 @@ function renderFavorites(data) {
     favoritesImage.classList.add("favorites__img", "anime-img");
     favoritesImage.src = coverImage.large;
     favoritesImage.alt = title.english;
-
-    // Lazy Loading aktivieren
     favoritesImage.loading = "lazy";
 
     const favoritesTitle = document.createElement("span");
     favoritesTitle.classList.add("favorites__title", "anime-title");
     favoritesTitle.textContent = title.english;
+
+    favoritesItem.addEventListener("click", () => {
+      openTrailer(trailer.id, trailer.site);
+    });
 
     favoritesContainer.appendChild(favoritesItem);
     favoritesItem.append(favoritesImage, favoritesTitle);
@@ -362,42 +373,12 @@ function initFavoritesSwiper() {
   });
 }
 
-// TOP-RATED SECTION
-async function fetchTopRatedAnimes() {
-  const query = `
-  query {
-      Page(page: 1, perPage: 15) {
-        media(type: ANIME, sort: SCORE_DESC) {
-          coverImage {
-            medium
-            large
-          }
-          title {
-            english
-          }
-        }
-      }
-    }`;
-  try {
-    const response = await fetch("https://graphql.anilist.co", {
-      method: "Post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query }),
-    });
-    const data = await response.json();
-    topRatedAnimes = data.data.Page.media;
-    // console.log(topRatedAnimes);
-    renderTopRated(topRatedAnimes);
-    initTopRatedSwiper();
-  } catch (error) {
-    console.error("Fehler beim Laden der TopRated Section", error);
-  }
-}
+/* ====== TOPRATED SECTION ===== */
 function renderTopRated(data) {
   const topRatedContainer = document.querySelector(".top-rated__container");
   topRatedContainer.innerHTML = "";
 
-  data.forEach(({ title, coverImage }) => {
+  data.forEach(({ title, coverImage, trailer }) => {
     const topRatedItem = document.createElement("div");
     topRatedItem.classList.add("top-rated__item", "swiper-slide");
 
@@ -405,54 +386,24 @@ function renderTopRated(data) {
     topRatedImage.classList.add("top-rated__img", "anime-img");
     topRatedImage.src = coverImage.large;
     topRatedImage.alt = title.english;
-
-    // Lazy Loading aktivieren
     topRatedImage.loading = "lazy";
 
     const topRatedTitle = document.createElement("span");
     topRatedTitle.classList.add("top-rated__title", "anime-title");
     topRatedTitle.textContent = title.english;
 
+    topRatedItem.addEventListener("click", () => {
+      openTrailer(trailer.id, trailer.site);
+    });
+
     topRatedContainer.appendChild(topRatedItem);
     topRatedItem.append(topRatedImage, topRatedTitle);
   });
 }
-function initTopRatedSwiper() {
-  const topRatedSwiper = new Swiper(".top-rated__slider", {
-    direction: "horizontal",
-    slidesPerView: 8,
-    spaceBetween: 20,
-    loop: false,
-    watchSlidesVisibility: true,
-    grabCursor: true,
-    breakpoints: {
-      1440: {
-        slidesPerView: 8,
-        spaceBetween: 20,
-      },
-      1024: {
-        slidesPerView: 6,
-        spaceBetween: 18,
-      },
-      640: {
-        slidesPerView: 6,
-        spaceBetween: 15,
-      },
-      480: {
-        slidesPerView: 4,
-        spaceBetween: 12,
-      },
-      320: {
-        // small Smartphones
-        slidesPerView: 3,
-        spaceBetween: 10,
-      },
-    },
-  });
-}
 
-// DETAILS PANEL
+/* ====== DETAILS PANEL ===== */
 async function fetchDetailsPanel(id) {
+  loader.style.display = "flex";
   const query = `
   query ($id: Int) {
         Media(id: $id) {
@@ -485,21 +436,22 @@ async function fetchDetailsPanel(id) {
     const response = await fetch("https://graphql.anilist.co", {
       method: "Post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, variables: { id } }), // dein Query als String
-    }); // dein Funktions-Parameter ID wird hier eingesetzt
+      body: JSON.stringify({ query, variables: { id } }),
+    });
     const data = await response.json();
 
-    if (!data.data || !data.data.Media) {
-      console.warn("⚠️ Kein Media für ID:", id, data);
-      return; // 👉 brich ab statt Fehler
+    if (data.errors) {
+      console.error("GraphQL Fehler:", data.errors);
+      return;
     }
 
-    const anime = data.data.Media;
+    const details = data.data.Media;
 
-    console.log(anime);
-    renderDetailsPanel(anime);
+    renderDetailsPanel(details);
   } catch (error) {
     console.error("Fehler beim Laden des DetailsPanel", error);
+  } finally {
+    loader.style.display = "none";
   }
 }
 function renderDetailsPanel(data) {
@@ -607,28 +559,67 @@ function renderDetailsPanel(data) {
   const closeDetails = document.querySelector(".close-details");
   closeDetails.addEventListener("click", () => {
     closeDetailsPanel();
-    unlockScroll();
   });
 }
-// DETAILS PANEL
+
+/* ====== DETAILS PANEL OPEN/CLOSE ===== */
 const animeDetails = document.querySelector(".details-panel");
 function openDetailsPanel() {
   animeDetails.classList.add("open");
 }
 function closeDetailsPanel() {
   animeDetails.classList.remove("open");
+  unlockScroll();
+}
+/* ====== SWIPER FUNCTION ===== */
+function initSwiper(selector) {
+  const topRatedSwiper = new Swiper(selector, {
+    direction: "horizontal",
+    slidesPerView: 8,
+    spaceBetween: 20,
+    loop: false,
+    watchSlidesVisibility: true,
+    grabCursor: true,
+    breakpoints: {
+      1440: {
+        slidesPerView: 8,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 6,
+        spaceBetween: 18,
+      },
+      640: {
+        slidesPerView: 6,
+        spaceBetween: 15,
+      },
+      480: {
+        slidesPerView: 4,
+        spaceBetween: 12,
+      },
+      320: {
+        slidesPerView: 3,
+        spaceBetween: 10,
+      },
+    },
+  });
 }
 
-// sidebar
+/* ====== SIDEBAR ===== */
 const openSideBtn = document.querySelector(".nav__open-sidebar");
 const sidebar = document.querySelector(".sidebar");
 
 openSideBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
+  const isOpen = sidebar.classList.toggle("open");
+
+  openSideBtn.innerHTML = isOpen
+    ? `<i class="fa-solid fa-xmark"></i>`
+    : `<i class="fa-solid fa-bars-staggered"></i>`;
 });
 
-// TRAILER PANEL
+/* ====== TRAILER PANEL ===== */
 const trailerPanel = document.querySelector(".trailer-panel");
+const trailerCloseBtn = document.querySelector(".trailer-panel__close");
 
 function renderTrailerPanel(trailerId, site) {
   const trailerContent = document.querySelector(".trailer-panel__content");
@@ -640,14 +631,25 @@ function renderTrailerPanel(trailerId, site) {
   trailer.allow = "autoplay; fullscreen";
 
   trailerContent.append(trailer);
+}
 
-  const trailerClose = document.querySelector(".trailer-panel__close");
-  trailerClose.addEventListener("click", () => {
+/* ====== TRAILER PANEL OPEN/CLOSE ===== */
+function openTrailer(trailerId, site) {
+  renderTrailerPanel(trailerId, site);
+  trailerPanel.classList.add("open");
+  lockScroll();
+}
+
+function closeTrailer() {
+  trailerCloseBtn.addEventListener("click", () => {
     trailerPanel.classList.remove("open");
     unlockScroll();
   });
 }
 
+closeTrailer();
+
+// Scroll Lock
 function lockScroll() {
   document.body.classList.add("no-scroll");
 }

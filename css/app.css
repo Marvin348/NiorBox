@@ -10,19 +10,33 @@ body {
 body.no-scroll {
   overflow: hidden;
 }
-.section {
-  margin: var(--section-padding);
+/* ============================
+   Loader
+============================ */
+.loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-bg);
+  z-index: var(--z-top);
 }
-.section__heading {
-  font-size: clamp(1.5rem, 1.8vw, 2rem);
-  color: var(--color-accent);
-  font-weight: var(--font-weight-medium);
-  margin-bottom: 1rem;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--color-accent);
+  border-top: 5px solid rgb(255, 255, 255);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
-header {
-  background-color: var(--color-bg);
+
+@keyframes spin {
+  to { transform: rotate(360deg);}
 }
-/*spacingContainer*/
+/* ============================
+   Layout
+============================ */
 .spacing__container {
   max-width: var(--container-width);
   margin: 0 auto;
@@ -35,22 +49,33 @@ header {
   flex: 1;
   margin-top: 12rem;
 }
+.section {
+  margin: var(--section-padding);
+}
+.section__heading {
+  font-size: clamp(1.5rem, 1.8vw, 2rem);
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 1rem;
+}
+header {
+  background-color: var(--color-bg);
+}
+/* ============================
+   Navbar
+============================ */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
 }
-.nav__left {
-}
-.nav__mid {
-}
 .nav__right {
   display: flex;
   gap: 1rem;
 }
 .nav__left-logo {
-  width: 9rem;
+  width: clamp(7rem, 11vw, 14rem);
   height: 3.5rem;
 }
 .nav__list {
@@ -76,16 +101,21 @@ header {
 .nav__open-sidebar.hidden {
   display: none;
 }
-/*sidebar*/
+/* ============================
+   Sidebar
+============================ */
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   display: flex;
   justify-content: flex-start;
-  z-index: 5;
+  z-index: var(--z-medium);
 
   pointer-events: none;
+}
+.sidebar.open {
+  pointer-events: all;
 }
 .sidebar__layout {
   background-color: var(--color-bg);
@@ -93,10 +123,6 @@ header {
   margin: 0 auto;
   transform: translateX(-100%);
   transition: 0.3s ease-in-out;
-  z-index: 5;
-}
-.sidebar.open {
-  pointer-events: all;
 }
 .sidebar.open .sidebar__layout {
   transform: translateX(0);
@@ -111,7 +137,7 @@ header {
   margin-bottom: 2rem;
 }
 .sidebar__logo {
-  width: 8rem;
+  width: 7rem;
   height: auto;
 }
 .sidebar__list {
@@ -129,10 +155,14 @@ header {
 .sidebar__footer {
   border-top: 1px solid rgb(221, 221, 221);
 }
-/*hero*/
+/* ============================
+   Hero
+============================ */
 .hero {
   color: var(--color-text);
-  
+}
+.hero__slider {
+  position: relative;
 }
 .hero__bg {
   background-size: cover;
@@ -155,11 +185,6 @@ header {
   gap: 1rem;
   margin-bottom: 0.5rem;
 }
-.hero__rating {
-}
-.hero__description {
-  
-}
 .hero__buttons {
   margin-bottom: 0.5rem;
   display: flex;
@@ -178,22 +203,19 @@ header {
   background-color: var(--color-accent);
   color: black;
 }
-.hero__btn--watch:hover {
-}
 .hero__btn--details {
   background: none;
   font-weight: bold;
 }
-/*swiper*/
+/* ============================
+   Swiper
+============================ */
 .slider {
   overflow: hidden;
-  width: 100%;
 }
-.swiper-pagination {
- 
-}
-/*popular*/
-/**/
+/* ============================
+   Popular, Favorites, TopRated
+============================ */
 .anime-img {
   width: 100%;
   aspect-ratio: 3/4;
@@ -204,11 +226,9 @@ header {
   color: var(--color-text);
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Anzahl der Zeilen */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-/*favorites*/
-/*topRated*/
 .top-rated__more {
   margin-top: 1rem;
   text-align: center;
@@ -224,13 +244,14 @@ header {
   font-size: 0.95rem;
   text-decoration: none;
 }
-/*details__panel*/
+/* ============================
+   Details Panel
+============================ */
 .details-panel {
   position: fixed;
   inset: 0;
   background-color: var(--color-bg);
-  z-index: 100;
-  
+  z-index: var(--z-high);
   opacity: 0;
   pointer-events: none;
 }
@@ -245,11 +266,16 @@ header {
   height: 100%;
   overflow-y: auto;
 }
+.details-panel__layout::-webkit-scrollbar {
+  width: 8px;
+}
+.details-panel__layout::-webkit-scrollbar-thumb {
+  background: rgb(45, 45, 45);
+}
 .details-panel__content {
   position: relative;
   color: var(--color-text);
 }
-/* close-details */
 .close-details {
   position: absolute;
   top: 0;
@@ -265,7 +291,6 @@ header {
   flex-direction: row-reverse;
   gap: 2rem;
 }
- /* Textbeschreibung */
 .details-panel__text {
   flex: 1 1 80%;
 }
@@ -277,22 +302,18 @@ header {
   line-height: 1.8;
   color: rgb(207, 207, 207);
 }
-/* Status, Season, Episoden */
 .details-panel__info {
   margin-top: 2rem;
   display: flex;
   justify-content: flex-start;
   gap: 3rem;
 }
-.details-panel__info-group {
-
-}
 .details-panel__label {
   display: block;
   color: rgb(207, 207, 207);
 }
 .details-panel__value {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-left: 0.3rem;
   color: var(--color-text);
 }
@@ -307,14 +328,13 @@ header {
   padding: 0.3rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   transition: 0.3s ease-in-out;
 }
 .details-panel__genre-btn:hover {
   background-color: var(--color-accent);
   color: black;
 }
-/* Bild + Bewertung */
 .details-panel__media {
   flex: 1 1 20%;
   text-align: center;
@@ -323,14 +343,11 @@ header {
   width: 100%;
   height: auto;
 }
-.details-panel__rating {
-
-}
 .details-panel__stars {
   margin: 0.2rem 0 1rem 0;
 }
 .details-panel__stars i {
-  color: #FFD43B;
+  color: #ffd43b;
 }
 .details-panel__btns {
   display: flex;
@@ -343,7 +360,7 @@ header {
   width: 100%;
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   transition: 0.3s ease-in-out;
   display: flex;
   align-items: center;
@@ -366,14 +383,14 @@ header {
 .details-panel__fav-btn:hover {
   opacity: 0.9;
 }
-
-/*trailer*/
+/* ============================
+   Trailer Panel
+============================ */
 .trailer-panel {
   position: fixed;
   background-color: var(--color-bg);
   inset: 0;
-  z-index: 100;
-
+  z-index: var(--z-high);
   opacity: 0;
   pointer-events: none;
 }
@@ -390,7 +407,6 @@ header {
   border: none;
   font-size: 2rem;
   cursor: pointer;
-
   position: absolute;
   top: 0;
   right: 0;
@@ -408,7 +424,9 @@ header {
   border: none;
   display: block;
 }
-/* MediaQuerys */
+/* ============================
+   Media Queries
+============================ */
 @media (max-width: 740px) {
   .nav__list {
     display: none;
@@ -424,5 +442,28 @@ header {
   }
   .details-panel__img {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__description {
+    display: none;
+  }
+  .hero__content {
+    width: 250px;
+  }
+  .hero__buttons {
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5rem;
+  }
+  .hero__btn--watch {
+    display: block;
+    width: 100%;
+  }
+  .hero__btn--details {
+    display: block;
+    width: 100%;
+    border: 1px solid white;
   }
 }

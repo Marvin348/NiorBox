@@ -1,19 +1,26 @@
 :root {
+  /* Typography */
   --font-family: "Poppins";
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Colors */
   --color-text: rgb(242, 242, 242);
   --color-accent: rgb(97, 171, 236);
   --color-bg: rgb(34, 33, 33);
-
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
-
+  --color-input: rgb(239, 239, 239);
+  --hover-color-accent: rgb(88, 154, 212);
+  --opacity-text: 0.8;
   --border-radius: 0.2rem;
-}
-:root {
+
+  /* Layout */
   --container-width: 1200px;
   --container-width-small: 650px;
   --container-padding: 0 2rem;
-
   --section-padding: 3rem 0;
+
+  /* Z-Index (Layers) */
+  --z-medium: 100;
+  --z-high: 500;
+  --z-top: 1000;
 }
