@@ -22,7 +22,7 @@ Ziel war es, ein ansprechendes Frontend mit interaktiven Features umzusetzen und
 1. Repository klonen:
 
    ```bash
-   git clone https://github.com/deinBenutzername/deinRepo.git
+   git clone https://github.com/Marvin348/NiorBox.git
 
    ```
 
