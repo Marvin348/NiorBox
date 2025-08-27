@@ -33,7 +33,7 @@ body {
 }
 .bg__wrapper {
   background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3)),
-    url(/img/bg-wallpaper.png);
+    url(../img/bg-wallpaper.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
