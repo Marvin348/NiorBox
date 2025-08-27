@@ -22,7 +22,7 @@ The goal was to build an engaging frontend with interactive features while pract
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/deinBenutzername/deinRepo.git
+   git clone https://github.com/Marvin348/NiorBox.git
 
    ```
 
