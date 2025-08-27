@@ -69,6 +69,12 @@ body {
   border: none;
   background-color: var(--color-input);
 }
+.login__input:focus {
+  outline: none;
+}
+.input-error {
+  border: 2px solid red;
+}
 .login__submit-btn {
   width: 100%;
   padding: 0.6rem;

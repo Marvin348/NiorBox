@@ -21,6 +21,9 @@ function handleLogin(e) {
   );
   if (validLogin) {
     window.location.href = "app.html";
+  } else {
+    userEmailInput.classList.add("input-error");
+    userPasswortInput.classList.add("input-error");
   }
 }
 form.addEventListener("submit", handleLogin);
