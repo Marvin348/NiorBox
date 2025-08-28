@@ -89,7 +89,7 @@ query {
 `;
   try {
     const response = await fetch("https://graphql.anilist.co", {
-      method: "Post",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query }),
     });
@@ -434,7 +434,7 @@ async function fetchDetailsPanel(id) {
 
   try {
     const response = await fetch("https://graphql.anilist.co", {
-      method: "Post",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query, variables: { id } }),
     });
