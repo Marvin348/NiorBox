@@ -17,6 +17,9 @@ The goal was to build an engaging frontend with interactive features while pract
 - Sidebar navigation
 - Hover effects and animations
 
+  ## Live-Demo
+👉 [try](https://marvin348.github.io/NiorBox/)
+
 ## Installation / Usage
 
 1. Clone the repository:
