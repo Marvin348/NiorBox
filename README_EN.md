@@ -18,7 +18,7 @@ The goal was to build an engaging frontend with interactive features while pract
 - Hover effects and animations
 
   ## Live-Demo
-👉 [try](https://marvin348.github.io/NiorBox/)
+👉 [try it out](https://marvin348.github.io/NiorBox/)
 
 ## Installation / Usage
 
